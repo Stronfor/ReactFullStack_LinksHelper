@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "serve": "nodemon app.js"
+    "serve": "nodemon app.js",
+    "client": "npm run start --prefix client",
+    "dev": "concurrently \"npm run serve\" \"npm run client\""
   },
   "author": "Serg Kabaliuk <serg.arnisha@gmail.com>",
   "license": "ISC",
