@@ -70,7 +70,7 @@ router.post(
 
             const {email, password} = req.body;
             const user = await User.findOne({ email });
-
+ 
             if(!user){
                   return res.status(400).json({message: 'Пользователь не найден'})
             }
@@ -85,7 +85,7 @@ router.post(
             const token = jwt.sign(
                   { userId: user.id }, // данные которые будут зашифрованые в конкретном токене
                   config.get('jwtSecret'), // сикретный ключ
-                  {expairesIn: '1h'} // время существование токена (1 час)
+                  {expiresIn: '1h'} // время существование токена (1 час)
             );
 
             res.json({token, userId: user.id})
