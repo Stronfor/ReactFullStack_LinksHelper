@@ -1,3 +1,5 @@
+// ВСЯ ЛОГИКА ПО РЕГИСТРАЦИИ И ВХОДУ В СИСТЕМУ
+
 const {Router} = require('express');
 const bcrypt = require('bcryptjs'); // для шифрования паролей
 const { check, validationResult } = require('express-validator') // для валидации
