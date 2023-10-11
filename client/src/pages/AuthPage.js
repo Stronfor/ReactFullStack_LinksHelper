@@ -1,8 +1,11 @@
-import React , {useEffect, useState} from "react";
+import React , {useContext, useEffect, useState} from "react";
 import { useHttp } from "../hooks/http.hook";
 import { useMessage } from "../hooks/message.hook";
+import { AuthContext } from "../context/AuthContext";
 
 export const AuthPage = () => {
+      const auth = useContext(AuthContext);
+
       const message = useMessage();
 
       const {loading, error: errorFromHook, request:requestFromHook, clearError} = useHttp();
@@ -34,7 +37,7 @@ export const AuthPage = () => {
             try{
                   // в package.json добавляем поле = "proxy":"http://localhost:5050",(Работает для РАЗРАБОТКИ, для продакшена есть другой метод!!!)
                   const data = await requestFromHook('/api/auth/login', 'POST', {...form}) // фронт и бек работают на разных портах!! будет ошибка!! Нужно исольховать ПРОКСИ!!!
-                  message(data.message)
+                  auth.login(data.token, data.userId)
                   
             } catch(e){}
       }

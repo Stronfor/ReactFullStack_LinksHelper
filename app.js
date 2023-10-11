@@ -6,7 +6,7 @@ const app = express();
 
 app.use(express.json({extended: true}))// для того чтобы Node мог коректно прочитать тело запроса
 
-// registration ROUTES
+// registration ROUTES /api/auth/..... потом роуты описанные в auth.routes.js
 app.use('/api/auth', require('./routes/auth.routes'))
 
 

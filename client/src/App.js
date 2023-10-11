@@ -1,19 +1,32 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
+import { useRoutes } from './routes'
+import { useAuth } from './hooks/auth.hook';
+import { AuthContext } from './context/AuthContext'
+
+import {Navbar} from './components/Navbar'
+
 import 'materialize-css'
 
-import { useRoutes } from './routes'
+
 
 function App() {
 
-  const routes = useRoutes(false);
+  const {token, login, logout, userId} = useAuth();
+
+  const isAutenticated = !!token
+
+  const routes = useRoutes(isAutenticated);
 
   return (
-    <BrowserRouter>
-        <div className='container'>
-          {routes}
-        </div>
-    </BrowserRouter>
+    <AuthContext.Provider value={{token, login, logout, userId, isAutenticated}}>
+      <BrowserRouter>
+      { isAutenticated && <Navbar />}
+          <div className='container'>
+            {routes}
+          </div>
+      </BrowserRouter>
+    </AuthContext.Provider>
   )
 }
 

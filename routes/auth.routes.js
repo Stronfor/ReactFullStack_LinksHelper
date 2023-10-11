@@ -1,12 +1,15 @@
 const {Router} = require('express');
 const bcrypt = require('bcryptjs'); // для шифрования паролей
 const { check, validationResult } = require('express-validator') // для валидации
-const jwt = require('jsonwebtoken'); // библиотека нужна для отображение разного контента для разных пользователей
-const config = require('config')
+const jwt = require('jsonwebtoken'); // библиотека Токен нужна для отображение разного контента для разных пользователей
+const config = require('config');
 
-const User = require('../models/User')
+// шаблон пользователей (описан по адрессу ...)
+const User = require('../models/User');
+
 const router = Router();
 
+////////////////////  Логика создания нового пользователя по адресу =
 //  /api/auth/register
 router.post(
       '/register',
@@ -28,12 +31,15 @@ router.post(
 
                   const {email, password} = req.body;
 
-                  // логика регистрации
+                  /////////// логика регистрации
+
+                  // проверка на наличие уже такого мыла (акаунта) в базе 
                   const candidate = await User.findOne({email});// findOne() => метод mangoos
 
                   if(candidate){
-                  return res.status(400).json({message: 'Такой пользователь уже существует'});
+                        return res.status(400).json({message: 'Такой пользователь уже существует'});
                   }
+
                   // шифруем пароль с помощью библиотеки bcryptjs
                   const hashedPassword = await bcrypt.hash(password, 12);
                   // create new user
@@ -49,12 +55,13 @@ router.post(
       }
 );
 
+////////////////////  Логика Авторизации существуещего пользователя по адресу =
 //  /api/auth/login
 router.post(
       '/login',
       [
             check('email', 'Введите коррестный email').normalizeEmail().isEmail(),
-            check('password', 'Введите пароль').exists() // exists() => должен существовать (методы express-validator)
+            check('password', 'Введите пароль').exists() // exists() => должен существовать (методы express-validator)(в поле пароль должно быть что то введенно)
       ],
       async(req, res) => {
       try{
@@ -81,7 +88,7 @@ router.post(
                   return res.status(400).json({message: 'Неверный пароль, попробуйте снова'});
             }
 
-            // создаем токен
+            // создаем токен если пользователь авторизирован
             const token = jwt.sign(
                   { userId: user.id }, // данные которые будут зашифрованые в конкретном токене
                   config.get('jwtSecret'), // сикретный ключ
