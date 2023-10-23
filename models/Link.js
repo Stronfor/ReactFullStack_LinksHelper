@@ -7,7 +7,7 @@ const schema = new Schema({
       date: {type: Date, default: Date.now}, //когда была создана ссылка
       clicks: {type: Number, default: 0},
       owner: {type: Types.ObjectId, ref: 'User'}, // Связка с моделью User
-      /* name: {type: String, required: true} */
+      name: {type: String, required: true}
 });
 
 module.exports = model('Link', schema);

@@ -16,6 +16,7 @@ router.post('/generate', auth, async(req, res) => {
             const baseUrl = config.get('baseUrl');
 
             const {from} = req.body;
+            const {name} = req.body;
 
             // Сейчас НУжен метод чтобы Сделать нашу ссылку КОРОТКОЙ (использую библиотеку shortid)
             const code = shortid.generate();
@@ -31,7 +32,7 @@ router.post('/generate', auth, async(req, res) => {
             const to = baseUrl + '/t/' + code;
 
             const link = new Link({
-                 code, to, from, owner: req.user.userId 
+                 code, to, from, owner: req.user.userId, name
             })
 
             await link.save();

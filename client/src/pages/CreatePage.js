@@ -14,12 +14,13 @@ export const CreatePage = () => {
       const {request} = useHttp();
 
       const [link, setLink] = useState('')
+      const [name, setName] = useState('')
       /* const [name, setName] = useState('') */
 
-      const pressHandler = async event => {
-            if(event.key === 'Enter'){
+      const pressHandler = async() => {
+            
                   try{
-                       const data = await request('/api/link/generate', 'POST', {from: link}, {
+                       const data = await request('/api/link/generate', 'POST', {from: link, name: name}, {
                         Authorization: `Bearer ${auth.token}`
                        })
                        console.log(data);
@@ -27,7 +28,7 @@ export const CreatePage = () => {
                        navigate(`/detail/${data.link._id}`)
                       
                   } catch (e){}
-            }
+           
       }
 
       return (
@@ -39,12 +40,17 @@ export const CreatePage = () => {
                                     id="link"
                                     value={link}
                                     onChange={e => setLink(e.target.value)}
-                                    onKeyDown={pressHandler}
+                                   /*  onKeyDown={pressHandler} */
                               />
                               <label htmlFor="link">Add your link</label>
                         </div>
-                        {/* <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} />
-                              <label htmlFor="name">add Name for link</label> */}
+                        <div className="input-field">
+                              <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} />
+                              <label htmlFor="name">add Name for link</label>
+                        </div>
+                       
+                        <button type="button" onClick={pressHandler}>Submit</button>
+                  
                   </div>
             </div>
       )
