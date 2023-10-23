@@ -1,6 +1,7 @@
 const express = require('express');
 const config = require('config'); // библиотека которая читает данные с файла (для хранения паролей и переменных)
 const mongoose = require('mongoose')
+const path = require('path')
 
 const app = express();
 
@@ -11,6 +12,17 @@ app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/link', require('./routes/link.routes'))
 app.use('/t', require('./routes/redirect.routes'))
 
+// Фунционал для работы на удаленном сервере (через хост)
+if(process.env.NODE_ENV === 'production'){
+      // тогда отдаем статику
+      app.use('/', express.static(path.join(__dirname, 'client', 'build')))
+
+      // на любые Запросы обращаемся к файлу (и таким образом будет работать и фронт и бэк одновременно)
+      app.get('*', (req, res) =>{
+            res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+      })
+}
+///////////////
 
 const PORT = config.get('port') || 5000
 
