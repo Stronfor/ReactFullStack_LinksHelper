@@ -10,15 +10,14 @@ module.exports = (req, res, next) => { // next  это метод позволя
 
       // а Если это уже обычный запрос (POST GET ...) 
       try{
-
-            const token = req.headers.autorization.split()[1] // Bearer TOKEN
+            const token = req.headers.authorization.slice(7) // Bearer <TOKEN>
 
             if(!token){
-                return  res.status(401).json({message: 'No autorization'})
+                return  res.status(401).json({message: 'No token for autorization'})
             }
 
             // разкодированый токен
-            const decoded = jwt.verify(token, config.get('jwtSecret'))
+            const decoded = jwt.verify(token, config.get('jwtSecret')) 
             req.user = decoded
             next();
 

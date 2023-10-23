@@ -6,6 +6,8 @@ const storageName = 'userData';
 export const useAuth = () => {
       // храним значение Токена
       const [token, setToken] = useState(null);
+      // Проверка в системе ли пользователь при перезагрузке страницы
+      const [ready, setReady] = useState(false);
       // id пользователя
       const [userId, setUserId] = useState(null);
 
@@ -38,7 +40,8 @@ export const useAuth = () => {
             if(data && data.token){
                   login(data.token, data.userId)
             }
+            setReady(true);
       }, [login])
 
-      return {login, logout, token, userId}
+      return {login, logout, token, userId, ready}
 }

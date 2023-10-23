@@ -10,7 +10,7 @@ const router = Router();
 
 ////////////////    описание роутов
 
-// добавление новой ссылки
+// добавление новой ссылки /api/link/generate
 router.post('/generate', auth, async(req, res) => {
       try{
             const baseUrl = config.get('baseUrl');
@@ -43,7 +43,7 @@ router.post('/generate', auth, async(req, res) => {
       }
 })
 
-// получение всех ссылок
+// получение всех ссылок   /api/link
 router.get('/', auth, async(req, res) => {
       try{
             // Нужно получать ссылки КОНКРЕТНОГО пользователя
@@ -55,7 +55,7 @@ router.get('/', auth, async(req, res) => {
       }
 });
 
-//получение ссылки по ID
+//получение ссылки по ID    /api/link/${linkId}
 router.get('/:id', auth, async(req, res) => {
       try{
             const link = await Link.findById(req.params.id);
